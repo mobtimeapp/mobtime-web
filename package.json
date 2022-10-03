@@ -1,0 +1,25 @@
+{
+  "name": "@mobtimeapp/web",
+  "version": "0.0.0-beta.0",
+  "description": "Mobtime web ui",
+  "main": "src/ui.js",
+  "scripts": {
+    "start": "parcel support/index.html",
+    "tailwind": "tailwindcss -i ./support/tailwind.css -o ./support/index.css",
+    "test": "ava"
+  },
+  "keywords": [
+    "mobtimeapp",
+    "mobtime",
+    "web",
+    "hyperapp"
+  ],
+  "author": "Alex Barry",
+  "license": "ISC",
+  "dependencies": {
+    "ava": "^4.3.3",
+    "hyperapp": "^2.0.22",
+    "parcel": "^2.7.0",
+    "tailwindcss": "^3.1.8"
+  }
+}
