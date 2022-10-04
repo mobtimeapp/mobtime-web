@@ -1,4 +1,4 @@
-# Snapshot report for `public/actions.init.test.js`
+# Snapshot report for `src/actions.init.test.js`
 
 The actual snapshot is saved in `actions.init.test.js.snap`.
 
