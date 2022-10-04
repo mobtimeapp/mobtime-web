@@ -51,9 +51,9 @@
         <a href="https://github.com/mobtimeapp/mobtime/discussions/176" target="github" class="block text-indigo-500">Learn more about mobbing</a>
       </section>
     </article>
-    <img style="width: 285px; height: 384px; bottom: -65px; right: 377px;" class="absolute hidden xl:block" src="../src/images/character%207.svg" alt="" />
+    <img style="width: 285px; height: 384px; bottom: -65px; right: 377px;" class="absolute hidden xl:block" src="images/character%207.svg" alt="" />
 
-    <img style="width: 285px; height: 384px; bottom: 65px; right: 80px;" class="absolute hidden xl:block" src="../src/images/character%2012.svg" alt="" />
+    <img style="width: 285px; height: 384px; bottom: 65px; right: 80px;" class="absolute hidden xl:block" src="images/character%2012.svg" alt="" />
   </header>
 
   <section class="w-full py-24">
@@ -79,7 +79,7 @@
             <div class="w-4 h-4 mr-1 bg-gray-400 rounded-full"></div>
             <div class="flex-grow w-64 h-4 bg-white border border-gray-500"></div>
           </div>
-          <img class="w-full h-auto" alt="Mobtime on desktop" src="../src/images/screenshot-desktop.png" />
+          <img class="w-full h-auto" alt="Mobtime on desktop" src="images/screenshot-desktop.png" />
         </div>
 
         <div class="flex flex-col items-center justify-center max-w-full p-2 mx-4 mb-6 bg-white border border-red-200 rounded-lg shadow-lg" style="width: 300px">
@@ -89,7 +89,7 @@
             <div class="w-12 h-1 m-1 bg-black rounded-full"></div>
           </div>
           <div style="height: 28rem;" class="mb-2 overflow-x-hidden overflow-y-auto">
-            <img class="w-full h-auto" alt="Mobtime on mobile" src="../src/images/screenshot-mobile.png" />
+            <img class="w-full h-auto" alt="Mobtime on mobile" src="images/screenshot-mobile.png" />
           </div>
           <div class="w-10 h-10 bg-white border border-red-900 rounded-full"></div>
         </div>
@@ -102,23 +102,23 @@
     <div class="container px-4 mx-auto text-center lg:px-0">
       <h2 class="text-3xl font-semibold"><span id="activityCount">0</span> People are using it right now!</h2>
 
-      <script type="module">
-        const update = (props) => {
-          fetch('/api/statistics')
-            .then(response => response.json())
-            .then(statistics => {
-              document.querySelector('#activityCount').innerText = statistics.connections.toString();
-            })
-            .catch((error) => {
-              console.warn('Unable to update statistics', error);
-            })
-            .then(() => {
-              setTimeout(update, 30000, props);
-            });
-        };
+<!--      <script type="module">-->
+<!--        const update = (props) => {-->
+<!--          fetch('/api/statistics')-->
+<!--            .then(response => response.json())-->
+<!--            .then(statistics => {-->
+<!--              document.querySelector('#activityCount').innerText = statistics.connections.toString();-->
+<!--            })-->
+<!--            .catch((error) => {-->
+<!--              console.warn('Unable to update statistics', error);-->
+<!--            })-->
+<!--            .then(() => {-->
+<!--              setTimeout(update, 30000, props);-->
+<!--            });-->
+<!--        };-->
 
-        update();
-      </script>
+<!--        update();-->
+<!--      </script>-->
     </div>
   </section>
 
@@ -173,7 +173,7 @@
       <div class="flex flex-row flex-wrap justify-center">
 
         <article class="flex flex-row items-start justify-center w-full mb-16 mx-2 lg:w-1/3">
-          <img src="../src/images/Startup.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
+          <img src="images/Startup.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
           <div class="flex-grow text-left">
             <header class="mb-3 text-xl font-semibold">Simple</header>
             <p class="text-lg">Open up a timer, add your team member names, and click "Start Timer." It doesn't get any more simple than this, folks!</p>
@@ -181,7 +181,7 @@
         </article>
 
         <article class="flex flex-row items-start justify-center w-full mb-16 mx-2 lg:w-1/3">
-          <img src="../src/images/Teamwork.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
+          <img src="images/Teamwork.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
           <div class="flex-grow text-left">
             <header class="mb-3 text-xl font-semibold">Collaborative</header>
             <p class="text-lg">Share the link to your timer to instantly start collaborating. Anyone with the link can join!</p>
@@ -189,7 +189,7 @@
         </article>
 
         <article class="flex flex-row items-start justify-center w-full mb-16 mx-2 lg:w-1/3">
-          <img src="../src/images/Hockey%20stick%20growth.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
+          <img src="images/Hockey%20stick%20growth.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
           <div class="flex-grow text-left">
             <header class="mb-3 text-xl font-semibold">Increase Productivity</header>
             <p class="text-lg">Don't stop the mob to remove a team name, or change your goals. Anyone with the link can help manage your mobbing session!</p>
@@ -197,7 +197,7 @@
         </article>
 
         <article class="flex flex-row items-start justify-center w-full mb-16 mx-2 lg:w-1/3">
-          <img src="../src/images/Database.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
+          <img src="images/Database.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
           <div class="flex-grow text-left">
             <header class="mb-3 text-xl font-semibold">Own your data</header>
             <p class="text-lg">When you remove your data, it's gone. When you leave your timer for at least 3 days, it's gone. If you're worried, <a  class="text-indigo-600 border-b-2 border-indigo-600" href="https://github.com/mobtimeapp/mobtime" target="github">self host</a>!</p>
@@ -205,7 +205,7 @@
         </article>
 
         <article class="flex flex-row items-start justify-center w-full mb-16 mx-2 lg:w-1/3">
-          <img src="../src/images/Digital%20Agreement.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
+          <img src="images/Digital%20Agreement.svg" alt="" class="flex-shrink w-16 h-16 mr-6" />
           <div class="flex-grow text-left">
             <header class="mb-3 text-xl font-semibold">Free to use</header>
             <p class="text-lg">All the basic features of mobtime will be free forever. No hidden costs or surprises from us!</p>
