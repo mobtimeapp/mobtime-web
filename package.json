@@ -21,7 +21,6 @@
   "dependencies": {
     "ava": "^4.3.3",
     "hyperapp": "^2.0.22",
-    "parcel": "^2.7.0",
     "sinon": "^14.0.1",
     "tailwindcss": "^3.1.8",
     "vite": "^3.1.4"
