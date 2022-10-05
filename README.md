@@ -8,9 +8,9 @@ Lightweight front end for MobTime. Built using [Hyperapp](https://github.com/jor
 There are two main pages: the homepage and the timer page
 
 - Homepage: `src/index.html`
-  - ![Landing page](https://imgur.com/a/zdVa1YL.jpg)
+![Landing page](https://imgur.com/L2LGR7G.jpg)
 - Timer Page: `src/timer/index.html`
-  - ![Page for mob timer implementation](https://imgur.com/FVweaWL)
+  ![Page for mob timer implementation](https://imgur.com/FVweaWL.jpg)
 
 ## Running Locally
 Vite is used to run a development server locally. 
