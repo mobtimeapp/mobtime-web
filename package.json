@@ -8,7 +8,7 @@
   "scripts": {
     "tailwind": "tailwindcss build -i ./src/styles/index.css -o ./src/styles/styles.css -c ./tailwind.config.js",
     "test": "ava",
-    "dev": "vite",
+    "start": "vite",
     "build": "vite build --emptyOutDir"
   },
   "keywords": [
