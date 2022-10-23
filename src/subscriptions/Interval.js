@@ -1,4 +1,4 @@
-export const TimerSub = (dispatch, props) => {
+export const IntervalSub = (dispatch, props) => {
   let handle = null;
 
   const tick = () => {

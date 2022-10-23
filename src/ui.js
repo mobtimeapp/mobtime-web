@@ -2,33 +2,40 @@ import { app, h, text } from 'hyperapp';
 
 import { Section } from './components/Section.js';
 
-import { TimerSub } from './subscriptions/Timer.js';
+import * as actions from './actions.js';
 
-const timeRemaining = (timerEndsAt, now) => {
+import { IntervalSub } from './subscriptions/Interval.js';
+import { ClientSub } from './subscriptions/Client.js';
+
+const timeRemaining = (duration, timerStartedAt, now) => {
+  const timerEndsAt = timerStartedAt + duration;
   const diff = Math.max(0, timerEndsAt - now);
+
   const minutes = Math.floor(diff / (60 * 1000));
   const seconds = Math.floor((diff - (minutes * 60 * 1000)) / 1000);
+
   return [
     minutes.toString().padStart(2, '0'),
     seconds.toString().padStart(2, '0'),
   ].join(':');
 };
 
-const OnTick = (state, { now }) => ({
-  ...state,
-  now,
-});
-
 export const ui = (domMount) => app({
   init: {
     now: Date.now(),
+    client: {
+      timerId: '@new-ui',
+      options: {
+        domain: 'mobti.me',
+      },
+    },
     timer: {
       time: {
-        endsAt: null, // (Date.now() + (5 * 60 * 1000)),
+        startedAt: null,
         duration: 5 * 60 * 1000,
       },
-      
     },
+    sdk: null,
   },
 
   view: (state) => {
@@ -56,10 +63,22 @@ export const ui = (domMount) => app({
           h('button', {
             type: 'button',
             class: 'mb-1 w-full rounded-sm border border-gray-500 px-2 py-1',
+            onclick: actions.timeStart,
+          }, text('Start')),
+          h('button', {
+            type: 'button',
+            class: 'mb-1 w-full rounded-sm border border-gray-500 px-2 py-1',
+            onclick: actions.timePause,
           }, text('Pause')),
           h('button', {
             type: 'button',
             class: 'mb-1 w-full rounded-sm border border-gray-500 px-2 py-1',
+            onclick: actions.timeResume,
+          }, text('Resume')),
+          h('button', {
+            type: 'button',
+            class: 'mb-1 w-full rounded-sm border border-gray-500 px-2 py-1',
+            onclick: actions.timeComplete,
           }, text('Cancel')),
         ]),
       ]),
@@ -77,7 +96,8 @@ export const ui = (domMount) => app({
   },
 
   subscriptions: (state) => [
-    (state.timer.time.endsAt && state.now < state.timer.time.endsAt) && [TimerSub, { onTick: OnTick }],
+    [ClientSub, { ...state.client }],
+    state.timer.time.startedAt && [IntervalSub, { onTick: actions.onTick }],
   ],
 
   node: domMount,

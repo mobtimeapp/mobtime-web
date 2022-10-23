@@ -17,7 +17,9 @@
   "author": "Alex Barry",
   "license": "ISC",
   "dependencies": {
+    "@mobtime/sdk": "^1.0.0-beta.6",
     "ava": "^4.3.3",
+    "composable-state": "^0.1.0",
     "hyperapp": "^2.0.22",
     "parcel": "^2.7.0",
     "tailwindcss": "^3.1.8"
