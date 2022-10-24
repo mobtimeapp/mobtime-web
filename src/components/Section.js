@@ -1,15 +1,19 @@
-import { h, text } from 'hyperapp';
+import { h } from '/vendor/hyperapp.js';
 
-export const Section = (props, children) => h(
-  'section',
-  {
-    class: 'py-2 px-4',
-  },
-  [
-    h('h1', {
-      class: 'mb-4 block border-b border-b-black text-lg font-bold capitalize',
-    }, text(props.title)),
+export const classes = {
+  'pt-5': true,
+  'px-4': true,
+};
 
-    h('article', {}, children),
-  ]
-);
+export const section = (props, children) =>
+  h(
+    'section',
+    {
+      ...props,
+      class: {
+        ...classes,
+        ...(props.class || {}),
+      },
+    },
+    children,
+  );
