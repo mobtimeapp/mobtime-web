@@ -6,7 +6,7 @@
   "license": "ISC",
   "type": "module",
   "scripts": {
-    "tailwind": "tailwindcss build -i ./src/styles/index.css -o ./src/styles/styles.css -c ./tailwind.config.js",
+    "tailwind": "tailwindcss build -i ./src/styles/index.css -o ./src/styles/styles.css -c ./tailwind.config.cjs",
     "test": "ava",
     "start": "vite",
     "build": "vite build --emptyOutDir"

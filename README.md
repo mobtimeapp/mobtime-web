@@ -21,7 +21,7 @@ Vite is used to run a development server locally.
 1. clone this repo &rarr; `git clone https://github.com/mobtimeapp/mobtime-web.git`
 2. Install dependencies &rarr; `npm i`
 3. Build CSS &rarr; `npm run tailwind`
-4. Run Vite dev server &rarr; `npm run dev`
+4. Run Vite dev server &rarr; `npm start`
 
 The app is now served at `http://localhost:5173` by default.
 
