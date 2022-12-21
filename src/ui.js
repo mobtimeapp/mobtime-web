@@ -1,104 +1,136 @@
-import { app, h, text } from 'hyperapp';
+import { app, h } from 'hyperapp';
 
+import { TimerSummary } from './components/TimerSummary.js';
 import { Section } from './components/Section.js';
+import { Member } from './components/Member.js';
+import { MemberForm } from './components/MemberForm.js';
+import { Goal } from './components/Goal.js';
+import { GoalForm } from './components/GoalForm.js';
+import { AppendableList } from './components/AppendableList.js';
 
 import * as actions from './actions.js';
 
 import { IntervalSub } from './subscriptions/Interval.js';
 import { ClientSub } from './subscriptions/Client.js';
 
-const timeRemaining = (duration, timerStartedAt, now) => {
-  const timerEndsAt = timerStartedAt + duration;
-  const diff = Math.max(0, timerEndsAt - now);
+import { load as loadI18n, text } from './i18n/i18n.js';
 
-  const minutes = Math.floor(diff / (60 * 1000));
-  const seconds = Math.floor((diff - (minutes * 60 * 1000)) / 1000);
-
-  return [
-    minutes.toString().padStart(2, '0'),
-    seconds.toString().padStart(2, '0'),
-  ].join(':');
+const tryLang = (languages) => {
+  if (languages.length === 0) {
+    return Promise.reject();
+  }
+  const [lang, ...otherLangs] = languages;
+  const path = `${lang}-default`;
+  return loadI18n(path)
+    .catch(() => tryLang(otherLangs));
 };
 
-export const ui = (domMount) => app({
-  init: {
-    now: Date.now(),
-    client: {
-      timerId: '@new-ui',
-      options: {
-        domain: 'mobti.me',
-      },
-    },
-    timer: {
-      time: {
-        startedAt: null,
-        duration: 5 * 60 * 1000,
-      },
-    },
-    sdk: null,
-  },
+const getLang = () => {
+  const params = (new URL(document.location)).searchParams;
+  const languages = [
+    params.get('lang'),
+    ...navigator.languages,
+  ].filter(Boolean).map(l => l.split('-')[0]);
 
-  view: (state) => {
-    return h('main', {
-      class: '',
-    }, [
+  return tryLang(languages);
+};
 
-      h('header', {
-        class: 'mb-2 mt-1 flex px-4',
+export const ui = (client, domMount) => getLang()
+  .finally(() => app({
+    init: actions.initialState(),
+
+    view: (state) => {
+      const { time, mob, goals, settings } = state.timer;
+
+      const mobOrder = (settings.mobOrder || '').split(',');
+      const minMembers = Math.max(mob.length, mobOrder.length);
+      const members = Array
+        .from({ length: minMembers }, (_, index) => ({
+          id: `empty-${index}`,
+          name: null,
+          ...(mob[index] || {}),
+          position: mobOrder[index] || null,
+        }));
+
+      const pendingGoals = goals.filter(g => !g.completed);
+      const completedGoals = goals.filter(g => g.completed);
+
+      return h('main', {
+        class: '',
       }, [
-        h('mobtime:timer', {
-          class: 'flex-grow',
+        h('header', {
+          class: 'mb-2 mt-1 flex px-4',
         }, [
-          h('h1', {
-            class: 'text-sm font-bold uppercase tracking-wide'
-          }, text('remaining time')),
-          h('h2', {
-            class: 'font-mono text-5xl'
-          }, text(timeRemaining(state.timer.time.endsAt, state.now))),
+          h('logo', { class: 'flex-grow' }, [
+            h('h1', { class: 'uppercase sm:text-lg sm:font-bold sm:tracking-wide' }, text('mobtime')),
+          ]),
+          h('controls', { class: 'flex h-full flex-row' }, [
+            h('button', { type: 'button', class: 'ml-4 rounded-sm text-sm' }, [
+              text('⚙️ ', false),
+              text('settings')
+            ]),
+            h('button', { type: 'button', class: 'ml-4 rounded-sm text-sm' }, [
+              text('✉️ ', false),
+              text('notifications'),
+            ]),
+          ]),
         ]),
 
-        h('mobtime:controls', {
-          class: 'flex h-full flex-col items-end justify-center',
+        TimerSummary({
+          time,
+          settings,
+          now: state.now,
+        }),
+
+        h('mobtime-grid', {
+          class: 'grid sm:grid-cols-2',
         }, [
-          h('button', {
-            type: 'button',
-            class: 'mb-1 w-full rounded-sm border border-gray-500 px-2 py-1',
-            onclick: actions.timeStart,
-          }, text('Start')),
-          h('button', {
-            type: 'button',
-            class: 'mb-1 w-full rounded-sm border border-gray-500 px-2 py-1',
-            onclick: actions.timePause,
-          }, text('Pause')),
-          h('button', {
-            type: 'button',
-            class: 'mb-1 w-full rounded-sm border border-gray-500 px-2 py-1',
-            onclick: actions.timeResume,
-          }, text('Resume')),
-          h('button', {
-            type: 'button',
-            class: 'mb-1 w-full rounded-sm border border-gray-500 px-2 py-1',
-            onclick: actions.timeComplete,
-          }, text('Cancel')),
+          Section({
+            title: 'yourTeam',
+            actions: [
+              h('button', { type: 'button', class: 'ml-2 text-green-600' }, text('done')),
+              h('button', { type: 'button', class: 'ml-2' }, text('edit')),
+            ]
+          }, [
+            // h('ol', { class: 'mb-4' }, members.map(Member)),
+
+            AppendableList({
+              confirmed: members.map(Member),
+              pending: state.local.mob.map(name => Member({ name, pending: true }))
+            }),
+            MemberForm(),
+          ]),
+
+          Section({ title: 'goals' }, [
+            h('ol', { class: 'mb-4' }, pendingGoals.map(Goal)),
+            GoalForm(),
+
+            h('details', {}, [
+              h('summary', { open: false }, [
+                text(`${completedGoals.length} `, false),
+                text(`completed`),
+              ]),
+              h('ol', { class: 'mb-4 ml-4' }, completedGoals.map(Goal)),
+            ]),
+          ]),
         ]),
-      ]),
 
-      h('mobtime-grid', {
-        class: 'grid sm:grid-cols-2',
-      }, [
-        Section({ title: 'your team' }, []),
-        Section({ title: 'goals' }, []),
-        Section({ title: 'timer configuration' }, []),
-        Section({ title: 'timer summary' }, []),
-      ]),
+      ]);
+    },
 
-    ]);
-  },
+    subscriptions: (state) => [
+      [ClientSub, {
+        client,
+        clientRestartedAt: state.clientRestartedAt,
+        setChannel: actions.setChannel,
+        setMob: actions.setMob,
+        setGoals: actions.setGoals,
+        setSettings: actions.setSettings,
+        setTimerTime: actions.setTimerTime,
+        setClientRestartedAt: actions.clientRestartedAt,
+      }],
+      state.timer.time.startedAt && [IntervalSub, { onTick: actions.onTick }],
+    ],
 
-  subscriptions: (state) => [
-    [ClientSub, { ...state.client }],
-    state.timer.time.startedAt && [IntervalSub, { onTick: actions.onTick }],
-  ],
-
-  node: domMount,
-});
+    node: domMount,
+  }));
